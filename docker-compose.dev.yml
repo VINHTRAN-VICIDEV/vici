@@ -9,10 +9,10 @@ services:
     volumes:
       - ./:/backend
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
+      - PORT=4000
       - DB_URI=mongodb://mongodb:27017
+      - DB_NAME=social
   mongodb:
     image: mongo:latest
     volumes:
