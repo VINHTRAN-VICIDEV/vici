@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import { ConfigService } from '@nestjs/config';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,13 +17,13 @@ async function bootstrap() {
     .addBearerAuth()
     .addOAuth2()
     .build();
-  console.log(process.env.DB_URI);
 
   const document = SwaggerModule.createDocument(app, config);
-  app.useGlobalPipes(new ValidationPipe({}));
   SwaggerModule.setup('docs', app, document);
 
+  app.use(compression());
   app.use(morgan('tiny'));
+  app.useGlobalPipes(new ValidationPipe({}));
 
   await app.listen(configService.get<number>('port'));
 }

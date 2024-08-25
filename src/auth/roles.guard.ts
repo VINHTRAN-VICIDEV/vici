@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { Roles } from '../../src/decorator/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -17,7 +17,6 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     function matchRoles(roles: string[], userRole: string) {
-      console.log(roles, userRole);
       return roles.some((role) => role === userRole);
     }
     return matchRoles(roles, user.role);

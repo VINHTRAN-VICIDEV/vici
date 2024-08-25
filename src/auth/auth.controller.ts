@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 import { SignInDto } from './dto/login.dto';
 import { AuthGuard } from './auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from '../../src/decorator/auth.decorator';
+import { Public } from 'src/decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Roles } from '../../src/decorator/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Roles(['user'])
