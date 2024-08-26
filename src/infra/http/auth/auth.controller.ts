@@ -8,11 +8,11 @@ import {
   Get,
   Request,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SignInDto } from './dto/login.dto';
-import { AuthGuard } from './auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { Public } from 'src/decorators/auth.decorator';
+import { Public } from 'src/shared/decorators/auth.decorator';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { SignInDto } from './auth.dto';
+import { AuthService } from 'src/infra/http/auth/auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +24,6 @@ export class AuthController {
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
-
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('profile')

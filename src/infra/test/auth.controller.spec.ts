@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
+import { AuthController } from '../http/auth/auth.controller';
 import { UsersService } from 'src/users/users.service';
-import { AuthService } from './auth.service';
-import { AuthGuard } from './auth.guard';
+import { AuthService } from '../../auth/auth.service';
+import { AuthGuard } from '../../auth/auth.guard';
 import { JwtService } from '@nestjs/jwt';
 
 describe('AuthController', () => {

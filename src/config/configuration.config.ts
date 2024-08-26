@@ -13,3 +13,10 @@ export const database_config = () => {
     },
   };
 };
+export const jwt_config = () => {
+  return {
+    jwt: {
+      secret: process.env.JWT_SECRET,
+    },
+  };
+};
