@@ -1,19 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '../../users/users.controller';
-import { UsersService } from '../../users/users.service';
+import { UserController } from 'src/infra/http/user/user.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesGuard } from 'src/auth/roles.guard';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { RolesGuard } from 'src/shared/guards/roles.guard';
+import { UserUseCase } from 'src/core/use-cases/user.use-case';
+import { ConfigService } from '@nestjs/config';
 
-describe('UsersController', () => {
-  let controller: UsersController;
+describe('UserController', () => {
+  let controller: UserController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
+      controllers: [UserController],
       providers: [
-        UsersService,
+        JwtService,
+        UserUseCase,
         {
           provide: APP_GUARD,
           useClass: AuthGuard,
@@ -23,10 +25,11 @@ describe('UsersController', () => {
           useClass: RolesGuard,
         },
         JwtService,
+        ConfigService,
       ],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
+    controller = module.get<UserController>(UserController);
   });
 
   it('should be defined', () => {
