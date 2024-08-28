@@ -8,13 +8,11 @@ import { GetUserUseCase } from 'src/application/ecommerce/use-cases/user/get-use
 import { CreateUserUseCase } from 'src/application/ecommerce/use-cases/user/create-user';
 import { GetUsersUseCase } from 'src/application/ecommerce/use-cases/user/get-users';
 import { APP_GUARD } from '@nestjs/core';
-import { UserService } from './user.service';
 import { SoftDeleteUserUseCase } from 'src/application/ecommerce/use-cases/user/soft-delete-user';
 @Module({
   imports: [],
   controllers: [UserController],
   providers: [
-    UserService,
     JwtService,
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },

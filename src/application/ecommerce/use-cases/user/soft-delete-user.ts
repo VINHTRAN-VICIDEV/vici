@@ -10,6 +10,6 @@ export class SoftDeleteUserUseCase {
     if (!existUser) {
       throw new BadRequestException();
     }
-    this.userRepository.updateOne(query);
+    this.userRepository.deleteOne(query);
   }
 }

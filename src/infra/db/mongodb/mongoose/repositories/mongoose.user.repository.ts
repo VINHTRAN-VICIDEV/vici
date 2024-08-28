@@ -21,7 +21,10 @@ export class MongooseUserRepository implements UserRepository {
     const newUser = new this.userModel(user.data);
     newUser.save();
   }
-  async updateOne(filter): Promise<void> {
+  async deleteOne(filter): Promise<void> {
     return this.userModel.findOneAndUpdate(filter, { deletedAt: Date.now() });
+  }
+  async updateOne(query: Record<string, any>, user: User): Promise<void> {
+    this.userModel.updateOne(query, user);
   }
 }
