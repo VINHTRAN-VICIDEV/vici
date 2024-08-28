@@ -1,26 +1,27 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { UserUseCase } from 'src/core/use-cases/user.use-case';
 import { JwtService } from '@nestjs/jwt';
 
+import { GetUserUseCase } from 'src/application/ecommerce/use-cases/user/get-user';
+import { CreateUserUseCase } from 'src/application/ecommerce/use-cases/user/create-user';
+import { GetUsersUseCase } from 'src/application/ecommerce/use-cases/user/get-users';
+import { APP_GUARD } from '@nestjs/core';
+import { UserService } from './user.service';
+import { SoftDeleteUserUseCase } from 'src/application/ecommerce/use-cases/user/soft-delete-user';
 @Module({
-  imports: [UserUseCase],
+  imports: [],
   controllers: [UserController],
   providers: [
+    UserService,
     JwtService,
-    UserUseCase,
-
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
+    CreateUserUseCase,
+    GetUserUseCase,
+    SoftDeleteUserUseCase,
+    GetUsersUseCase,
   ],
   exports: [],
 })

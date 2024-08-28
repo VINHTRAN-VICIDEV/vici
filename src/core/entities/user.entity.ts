@@ -5,9 +5,9 @@ export enum Role {
   Admin = 'admin',
 }
 export interface UserProps {
-  id?: string;
+  _id?: string;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   username: string;
   password: string;
   role: Role;
@@ -18,7 +18,7 @@ export class User extends Entity<UserProps> {
     super(props);
   }
   get id(): string {
-    return this.props.id;
+    return this.props._id;
   }
   get data(): UserProps {
     return this.props;
@@ -37,6 +37,7 @@ export class User extends Entity<UserProps> {
   set lastName(lastName: string) {
     this.props.lastName = lastName;
   }
+
   get username(): string {
     return this.props.username;
   }
