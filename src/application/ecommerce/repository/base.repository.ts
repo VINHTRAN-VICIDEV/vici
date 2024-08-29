@@ -1,17 +1,11 @@
-export abstract class BaseRepository<Entity> {
-  protected entity: Entity;
-  protected constructor(entity: Entity) {
-    this.entity = entity;
-  }
-  abstract find(query): Promise<Entity[]>;
-  abstract findOne(query): Promise<Entity>;
+export abstract class IGenericRepository<T> {
+  abstract getAll(): Promise<T[]>;
 
-  abstract updateMany(query, entity: Entity): void | Promise<Entity>;
-  abstract updateOne(query, entity: Entity): void | Promise<Entity[]>;
+  abstract get(filter: Record<string, any>): Promise<T[]>;
 
-  abstract deleteMany(query): void;
-  abstract deleteOne(query): void;
+  abstract getOne(id: string): Promise<T>;
 
-  abstract insertOne(entity: Entity): void;
-  abstract insertMany(entities: Entity[]): void;
+  abstract create(item: T): Promise<T>;
+
+  abstract updateOne(filter: Record<string, any>, item: T): Promise<boolean>;
 }

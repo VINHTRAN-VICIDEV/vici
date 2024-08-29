@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
+import { UserController } from './users.controller';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { JwtService } from '@nestjs/jwt';
