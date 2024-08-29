@@ -3,7 +3,6 @@ import { CreateProductsUseCase } from 'src/application/ecommerce/use-cases/produ
 import { GetProductsUseCase } from 'src/application/ecommerce/use-cases/product/get-products';
 import { Public } from 'src/shared/decorators/auth.decorator';
 import { CreateProductDto } from '../dto/create-product.dto';
-import { User } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('products')
@@ -15,7 +14,7 @@ export class ProductController {
   @Public()
   @Get()
   getProducts() {
-    return this.getProductUseCase.execute({});
+    return this.getProductUseCase.execute();
   }
 
   @ApiBearerAuth()

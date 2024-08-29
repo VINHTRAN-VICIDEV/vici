@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from '../../repository/product.repository';
 
-class GetUserQuery {}
 @Injectable()
 export class GetProductsUseCase {
   constructor(private productRepository: ProductRepository) {}
 
-  async execute(query: GetUserQuery) {
+  async execute() {
     return this.productRepository.base.getAll();
   }
 }

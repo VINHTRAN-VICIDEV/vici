@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from '../../repository/product.repository';
 import { Product } from 'src/core/entities/product.entity';
-import { User } from 'src/core/entities/user.entity';
 
 interface CreateProductUseCaseCommand {
   name: string;
