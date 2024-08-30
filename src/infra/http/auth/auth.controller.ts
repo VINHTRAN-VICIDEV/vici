@@ -8,12 +8,13 @@ import {
   Get,
   Request,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/auth.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { SignInDto, SignUpDto } from './auth.dto';
 import { AuthService } from 'src/infra/http/auth/auth.service';
 
+@ApiTags('Authenticate')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

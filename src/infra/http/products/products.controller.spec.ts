@@ -1,15 +1,39 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { ProductController } from './products.controller';
+import { CreateProductsUseCase } from 'src/application/ecommerce/use-cases/product/create-product';
+import { ProductController } from './products.controller';
+import { Test } from '@nestjs/testing';
+import { GetProductsUseCase } from 'src/application/ecommerce/use-cases/product/get-products';
+import { MongooseProductRepository } from 'src/infra/db/mongodb/mongoose/repositories/mongoose.product.repository';
+import { ProductRepository } from 'src/application/ecommerce/repository/product.repository';
+import { getModelToken } from '@nestjs/mongoose';
+import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
+describe('ProductsController', () => {
+  let controller: ProductController;
 
-describe('ProductController', () => {
-  // let controller: ProductController;
-  // beforeEach(async () => {
-  //   const module: TestingModule = await Test.createTestingModule({
-  //     controllers: [ProductController],
-  //   }).compile();
-  //   controller = module.get<ProductController>(ProductController);
-  // });
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      controllers: [ProductController],
+      providers: [
+        CreateProductsUseCase,
+        GetProductsUseCase,
+        { provide: ProductRepository, useClass: MongooseProductRepository },
+        {
+          provide: getModelToken(Product.name),
+          useValue: {
+            // Mock the methods you use in the repository
+            // find: jest.fn(),
+            // findOne: jest.fn(),
+            // create: jest.fn(),
+            // updateOne: jest.fn(),
+            // deleteOne: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
+
+    controller = moduleRef.get<ProductController>(ProductController);
+  });
+
   it('should be defined', () => {
-    // expect(controller).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });

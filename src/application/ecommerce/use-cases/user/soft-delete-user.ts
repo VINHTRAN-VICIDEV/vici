@@ -6,7 +6,7 @@ export class SoftDeleteUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(query) {
-    const existUser = await this.userRepository.findOne(query);
+    const existUser = await this.userRepository.base.getOne(query);
     if (!existUser) {
       throw new BadRequestException();
     }

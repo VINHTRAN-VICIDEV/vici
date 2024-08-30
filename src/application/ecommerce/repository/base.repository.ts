@@ -3,7 +3,7 @@ export abstract class IGenericRepository<T> {
 
   abstract get(filter: Record<string, any>): Promise<T[]>;
 
-  abstract getOne(id: string): Promise<T>;
+  abstract getOne(filter: Record<string, any>): Promise<T>;
 
   abstract create(item: T): Promise<T>;
 

@@ -1,9 +1,6 @@
-import { User } from 'src/core/entities/user.entity';
+import { IGenericRepository } from './base.repository';
 
 export abstract class UserRepository {
-  abstract find(query): Promise<User[]>;
-  abstract findOne(query): Promise<User>;
-  abstract insertOne(user: User): Promise<void>;
-  abstract updateOne(query, user: User): Promise<void>;
-  abstract deleteOne(query): Promise<void>;
+  base: IGenericRepository<any>;
+  abstract deleteOne(filter: Record<string, any>);
 }

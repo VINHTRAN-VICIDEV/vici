@@ -3,8 +3,9 @@ import { CreateProductsUseCase } from 'src/application/ecommerce/use-cases/produ
 import { GetProductsUseCase } from 'src/application/ecommerce/use-cases/product/get-products';
 import { Public } from 'src/shared/decorators/auth.decorator';
 import { CreateProductDto } from '../dto/create-product.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductController {
   constructor(

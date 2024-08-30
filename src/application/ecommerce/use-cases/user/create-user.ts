@@ -15,13 +15,13 @@ export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(userData: CreateUserUseCaseCommand) {
-    const existUser = await this.userRepository.findOne({
+    const existUser = await this.userRepository.base.getOne({
       username: userData.username,
     });
     if (existUser) {
       throw new BadGatewayException();
     }
     const user = new User(userData);
-    return this.userRepository.insertOne(user);
+    return this.userRepository.base.create(user);
   }
 }

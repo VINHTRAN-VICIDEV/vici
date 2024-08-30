@@ -8,6 +8,6 @@ export class GetUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(query: GetUserQuery): Promise<User> {
-    return this.userRepository.findOne({ ...query, deletedAt: null });
+    return this.userRepository.base.getOne({ ...query });
   }
 }

@@ -13,7 +13,7 @@ async function bootstrap() {
     .setTitle('Authenticate')
     .setDescription('The authenticate API description')
     .setVersion('1.0')
-    .addTag('auth')
+    .addTag('VICI APIs Documentation')
     .addBearerAuth()
     .addOAuth2()
     .build();
