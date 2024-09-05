@@ -21,7 +21,6 @@ export class ProductController {
   @ApiBearerAuth()
   @Post()
   createProduct(@Body() body: CreateProductDto, @Request() req) {
-    console.log(req.user.sub);
     this.createProductsUseCase.execute(body, req.user.sub);
   }
 }

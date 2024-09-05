@@ -11,5 +11,6 @@ export class SoftDeleteUserUseCase {
       throw new BadRequestException();
     }
     this.userRepository.deleteOne(query);
+    return true;
   }
 }

@@ -1,4 +1,4 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/application/ecommerce/repository/user.repository';
 import { Role, User } from 'src/core/entities/user.entity';
 
@@ -19,7 +19,7 @@ export class CreateUserUseCase {
       username: userData.username,
     });
     if (existUser) {
-      throw new BadGatewayException();
+      throw new BadRequestException();
     }
     const user = new User(userData);
     return this.userRepository.base.create(user);

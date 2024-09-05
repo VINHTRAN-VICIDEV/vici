@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepository } from '../../repository/product.repository';
 import { Product } from 'src/core/entities/product.entity';
 
-interface CreateProductUseCaseCommand {
+export interface CreateProductUseCaseCommand {
   name: string;
   price: number;
   amount: number;
@@ -18,7 +18,6 @@ export class CreateProductsUseCase {
     product.price = productData.price;
     product.amount = productData.amount;
     product.seller = sellerId;
-
     return this.productRepository.base.create(product);
   }
 }

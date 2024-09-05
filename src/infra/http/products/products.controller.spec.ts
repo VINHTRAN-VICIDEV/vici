@@ -18,14 +18,7 @@ describe('ProductsController', () => {
         { provide: ProductRepository, useClass: MongooseProductRepository },
         {
           provide: getModelToken(Product.name),
-          useValue: {
-            // Mock the methods you use in the repository
-            // find: jest.fn(),
-            // findOne: jest.fn(),
-            // create: jest.fn(),
-            // updateOne: jest.fn(),
-            // deleteOne: jest.fn(),
-          },
+          useValue: {},
         },
       ],
     }).compile();
