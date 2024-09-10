@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { GetProductsUseCase } from './get-products';
-import { ProductRepository } from '../../repository/product.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
+import { ProductRepositoryInterface } from '../../repository/product.interface.repository';
 
 describe('GetProductUseCase', () => {
   let getProductsUseCase;
@@ -12,11 +12,9 @@ describe('GetProductUseCase', () => {
       providers: [
         GetProductsUseCase,
         {
-          provide: ProductRepository,
+          provide: ProductRepositoryInterface,
           useValue: {
-            base: {
-              getAll: jest.fn(),
-            },
+            findAll: jest.fn(),
           },
         },
         { provide: getModelToken(Product.name), useValue: {} },
@@ -25,7 +23,9 @@ describe('GetProductUseCase', () => {
 
     getProductsUseCase = moduleRef.get<GetProductsUseCase>(GetProductsUseCase);
 
-    productRepository = moduleRef.get<ProductRepository>(ProductRepository);
+    productRepository = moduleRef.get<ProductRepositoryInterface>(
+      ProductRepositoryInterface,
+    );
   });
   it('should be defined', () => {
     expect(getProductsUseCase).toBeDefined();
@@ -41,7 +41,7 @@ describe('GetProductUseCase', () => {
       },
       { name: 'product 2', price: 100, amount: 100 },
     ];
-    (productRepository.base.getAll as jest.Mock).mockResolvedValue(products);
+    (productRepository.findAll as jest.Mock).mockResolvedValue(products);
     const result = await getProductsUseCase.execute();
 
     expect(result).toEqual(products);

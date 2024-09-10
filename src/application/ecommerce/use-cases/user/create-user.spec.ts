@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { CreateUserUseCase } from './create-user';
-import { UserRepository } from '../../repository/user.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { User as UserMongoose } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
 import { BadRequestException } from '@nestjs/common';
 import { Role } from 'src/core/entities/user.entity';
+import { UserRepositoryInterface } from '../../repository/user.interface.repository';
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase;
@@ -14,15 +14,20 @@ describe('CreateUserUseCase', () => {
       providers: [
         CreateUserUseCase,
         {
-          provide: UserRepository,
-          useValue: { base: { getOne: jest.fn(), create: jest.fn() } },
+          provide: UserRepositoryInterface,
+          useValue: {
+            create: jest.fn(),
+            findOneByCondition: jest.fn(),
+          },
         },
         { provide: getModelToken(UserMongoose.name), useValue: {} },
       ],
     }).compile();
 
     createUserUseCase = moduleRef.get<CreateUserUseCase>(CreateUserUseCase);
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
+    userRepository = moduleRef.get<UserRepositoryInterface>(
+      UserRepositoryInterface,
+    );
   });
 
   it('to be defined', () => {
@@ -39,7 +44,7 @@ describe('CreateUserUseCase', () => {
       role: Role.User,
       deletedAt: null,
     };
-    (userRepository.base.getOne as jest.Mock).mockResolvedValue(user);
+    (userRepository.findOneByCondition as jest.Mock).mockResolvedValue(user);
     await expect(createUserUseCase.execute(user)).rejects.toThrow(
       BadRequestException,
     );
@@ -54,8 +59,8 @@ describe('CreateUserUseCase', () => {
       role: Role.User,
       deletedAt: null,
     };
-    (userRepository.base.getOne as jest.Mock).mockResolvedValue(null);
-    (userRepository.base.create as jest.Mock).mockResolvedValue(user);
+    (userRepository.findOneByCondition as jest.Mock).mockResolvedValue(null);
+    (userRepository.create as jest.Mock).mockResolvedValue(user);
 
     const result = await createUserUseCase.execute(user);
     expect(result).toEqual(user);

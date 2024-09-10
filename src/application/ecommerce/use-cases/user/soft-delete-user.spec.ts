@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
-import { UserRepository } from '../../repository/user.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { User as UserMongoose } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
 import { BadRequestException } from '@nestjs/common';
 import { Role } from 'src/core/entities/user.entity';
 import { SoftDeleteUserUseCase } from './soft-delete-user';
+import { UserRepositoryInterface } from '../../repository/user.interface.repository';
 
 describe('CreateUserUseCase', () => {
   let softDeleteUserUseCase;
@@ -14,8 +14,8 @@ describe('CreateUserUseCase', () => {
       providers: [
         SoftDeleteUserUseCase,
         {
-          provide: UserRepository,
-          useValue: { base: { getOne: jest.fn() }, deleteOne: jest.fn() },
+          provide: UserRepositoryInterface,
+          useValue: { softDelete: jest.fn(), findOneByCondition: jest.fn() },
         },
         { provide: getModelToken(UserMongoose.name), useValue: {} },
       ],
@@ -24,7 +24,9 @@ describe('CreateUserUseCase', () => {
     softDeleteUserUseCase = moduleRef.get<SoftDeleteUserUseCase>(
       SoftDeleteUserUseCase,
     );
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
+    userRepository = moduleRef.get<UserRepositoryInterface>(
+      UserRepositoryInterface,
+    );
   });
 
   it('to be defined', () => {
@@ -41,7 +43,7 @@ describe('CreateUserUseCase', () => {
       role: Role.User,
       deletedAt: null,
     };
-    (userRepository.base.getOne as jest.Mock).mockResolvedValue(null);
+    (userRepository.findOneByCondition as jest.Mock).mockResolvedValue(null);
     await expect(softDeleteUserUseCase.execute(user)).rejects.toThrow(
       BadRequestException,
     );
@@ -56,8 +58,8 @@ describe('CreateUserUseCase', () => {
       role: Role.User,
       deletedAt: null,
     };
-    (userRepository.base.getOne as jest.Mock).mockResolvedValue(user);
-    (userRepository.deleteOne as jest.Mock).mockResolvedValue(true);
+    (userRepository.findOneByCondition as jest.Mock).mockResolvedValue(user);
+    (userRepository.softDelete as jest.Mock).mockResolvedValue(true);
 
     const result = await softDeleteUserUseCase.execute(user);
     expect(result).toEqual(true);

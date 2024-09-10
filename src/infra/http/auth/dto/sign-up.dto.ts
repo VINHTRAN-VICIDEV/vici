@@ -6,7 +6,6 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/core/entities/user.entity';
 
 export class SignUpDto {
   @ApiProperty()

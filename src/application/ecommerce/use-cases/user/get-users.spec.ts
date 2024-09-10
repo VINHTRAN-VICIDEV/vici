@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { GetUsersUseCase } from './get-users';
-import { UserRepository } from '../../repository/user.interface.repository';
 import { Role } from 'src/core/entities/user.entity';
 import { getModelToken } from '@nestjs/mongoose';
 import { User } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
+import { UserRepositoryInterface } from '../../repository/user.interface.repository';
 
 describe('GetUsersUseCase', () => {
   let getUsersUseCase;
@@ -13,12 +13,17 @@ describe('GetUsersUseCase', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         GetUsersUseCase,
-        { provide: UserRepository, useValue: { base: { get: jest.fn() } } },
+        {
+          provide: UserRepositoryInterface,
+          useValue: { findAll: jest.fn() },
+        },
         { provide: getModelToken(User.name), useValue: {} },
       ],
     }).compile();
     getUsersUseCase = moduleRef.get<GetUsersUseCase>(GetUsersUseCase);
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
+    userRepository = moduleRef.get<UserRepositoryInterface>(
+      UserRepositoryInterface,
+    );
   });
 
   it('should be defined', () => {
@@ -37,7 +42,7 @@ describe('GetUsersUseCase', () => {
         deletedAt: null,
       },
     ];
-    (userRepository.base.get as jest.Mock).mockResolvedValue(user);
+    (userRepository.findAll as jest.Mock).mockResolvedValue(user);
     const result = await getUsersUseCase.execute();
     expect(result).toEqual(user);
   });

@@ -1,12 +1,4 @@
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetUsersUseCase } from 'src/application/ecommerce/use-cases/user/get-users';

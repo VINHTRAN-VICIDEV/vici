@@ -3,9 +3,9 @@ import { ProductController } from './products.controller';
 import { Test } from '@nestjs/testing';
 import { GetProductsUseCase } from 'src/application/ecommerce/use-cases/product/get-products';
 import { MongooseProductRepository } from 'src/infra/db/mongodb/mongoose/repositories/mongoose.product.repository';
-import { ProductRepository } from 'src/application/ecommerce/repository/product.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
+import { ProductRepositoryInterface } from 'src/application/ecommerce/repository/product.interface.repository';
 describe('ProductsController', () => {
   let controller: ProductController;
 
@@ -15,7 +15,10 @@ describe('ProductsController', () => {
       providers: [
         CreateProductsUseCase,
         GetProductsUseCase,
-        { provide: ProductRepository, useClass: MongooseProductRepository },
+        {
+          provide: ProductRepositoryInterface,
+          useClass: MongooseProductRepository,
+        },
         {
           provide: getModelToken(Product.name),
           useValue: {},

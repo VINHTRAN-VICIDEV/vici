@@ -1,11 +1,8 @@
 import { Test } from '@nestjs/testing';
-import {
-  CreateProductsUseCase,
-  CreateProductUseCaseCommand,
-} from './create-product';
+import { CreateProductsUseCase } from './create-product';
 import { getModelToken } from '@nestjs/mongoose';
 import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
-import { ProductRepository } from '../../repository/product.interface.repository';
+import { ProductRepositoryInterface } from '../../repository/product.interface.repository';
 
 describe('CreateProductUseCase', () => {
   let createProductUseCase;
@@ -15,11 +12,9 @@ describe('CreateProductUseCase', () => {
       providers: [
         CreateProductsUseCase,
         {
-          provide: ProductRepository,
+          provide: ProductRepositoryInterface,
           useValue: {
-            base: {
-              create: jest.fn(),
-            },
+            create: jest.fn(),
           },
         },
         { provide: getModelToken(Product.name), useValue: {} },
@@ -29,7 +24,9 @@ describe('CreateProductUseCase', () => {
     createProductUseCase = moduleRef.get<CreateProductsUseCase>(
       CreateProductsUseCase,
     );
-    productRepository = moduleRef.get<ProductRepository>(ProductRepository);
+    productRepository = moduleRef.get<ProductRepositoryInterface>(
+      ProductRepositoryInterface,
+    );
   });
 
   it('should be defined', () => {
@@ -39,17 +36,18 @@ describe('CreateProductUseCase', () => {
 
   it('should create a product', async () => {
     const sellerId = '1234';
-    const product: CreateProductUseCaseCommand = {
+    const product = {
       name: 'testing product',
       price: 200,
       amount: 200,
+      seller: sellerId,
     };
 
-    (productRepository.base.create as jest.Mock).mockResolvedValue(product);
+    (productRepository.create as jest.Mock).mockResolvedValue(product);
     const result = await createProductUseCase.execute(product, sellerId);
     expect(result).toEqual(product);
 
-    expect(productRepository.base.create).toHaveBeenCalledWith({
+    expect(productRepository.create).toHaveBeenCalledWith({
       ...product,
       seller: sellerId,
     });
