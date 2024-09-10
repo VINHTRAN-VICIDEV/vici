@@ -26,10 +26,7 @@ export class TypeOrmBaseRepositoryAbstract<T>
   ): Promise<T> {
     return this._repository.findOne({ select: projection, where: condition });
   }
-  async findAll(
-    condition: FindOptionsWhere<T>,
-    options?: object,
-  ): Promise<FindAllResponse<T>> {
+  async findAll(condition: FindOptionsWhere<T>): Promise<FindAllResponse<T>> {
     const [count, items] = await Promise.all([
       this._repository.count({ where: condition }),
       this._repository.find({ where: condition }),
