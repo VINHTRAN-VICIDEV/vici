@@ -2,13 +2,13 @@ FROM node:20-alpine AS development
 
 WORKDIR /backend
 
-COPY package.json yarn.lock ./
+COPY package*.json ./
 
-RUN yarn --only=developement
+RUN npm install --only=developement
 
 COPY . .
 
-CMD ["yarn", "start:dev"]
+CMD ["npm", "run", "start:dev"]
 
 FROM node:19-alpine AS production
 
@@ -19,7 +19,7 @@ WORKDIR /backend
 
 COPY package*.json ./
 
-RUN yarn --only=production
+RUN npm install --only=production
 
 COPY . .
 
