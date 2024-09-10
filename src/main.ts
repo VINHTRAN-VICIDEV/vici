@@ -1,7 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import * as morgan from 'morgan';
 import { ConfigService } from '@nestjs/config';
 import * as compression from 'compression';
@@ -9,6 +13,7 @@ import * as compression from 'compression';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+
   const config = new DocumentBuilder()
     .setTitle('Authenticate')
     .setDescription('The authenticate API description')
@@ -26,5 +31,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({}));
 
   await app.listen(configService.get<number>('port'));
+}
+
+export function registerGlobals(app: INestApplication) {
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), {
+      // strategy: 'excludeAll', 👈 we'll talk about this later
+    }),
+  );
 }
 bootstrap();

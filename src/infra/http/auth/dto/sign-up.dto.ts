@@ -2,27 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsOptional,
-  IsString,
+  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 import { Role } from 'src/core/entities/user.entity';
-
-export class SignInDto {
-  @ApiProperty()
-  @MinLength(3)
-  @MaxLength(20)
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @ApiProperty()
-  @MinLength(3)
-  @MaxLength(20)
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
 
 export class SignUpDto {
   @ApiProperty()
@@ -49,6 +33,12 @@ export class SignUpDto {
   @ApiProperty()
   password: string;
 
-  @ApiProperty({ enum: Role, enumName: 'role' })
-  role: Role;
+  @ApiProperty()
+  @IsOptional()
+  address: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @Matches('^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$')
+  phoneNumber: string;
 }

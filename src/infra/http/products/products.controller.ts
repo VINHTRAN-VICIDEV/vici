@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { CreateProductsUseCase } from 'src/application/ecommerce/use-cases/product/create-product';
 import { GetProductsUseCase } from 'src/application/ecommerce/use-cases/product/get-products';
 import { Public } from 'src/shared/decorators/auth.decorator';
-import { CreateProductDto } from '../dto/create-product.dto';
+import { CreateProductDto } from './dto/request/create-product.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Products')
@@ -21,6 +21,10 @@ export class ProductController {
   @ApiBearerAuth()
   @Post()
   createProduct(@Body() body: CreateProductDto, @Request() req) {
-    this.createProductsUseCase.execute(body, req.user.sub);
+    const productData = {
+      ...body,
+      owner: req.user.sub,
+    };
+    return this.createProductsUseCase.execute(productData);
   }
 }

@@ -1,32 +1,38 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { Role } from 'src/core/entities/user.entity';
+import { BaseEntity } from './mongoose.base.entity';
+import { Exclude } from 'class-transformer';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
-export class User {
-  _id: mongoose.Schema.Types.ObjectId;
-
+@Schema({
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  },
+})
+export class User extends BaseEntity {
   @Prop({ required: true })
-  firstName: string;
+  first_name: string;
 
   @Prop()
-  lastName: string;
+  last_name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   username: string;
 
   @Prop({ required: true })
-  password: string;
+  password_hash: string;
 
-  @Prop({ required: true })
-  role: Role;
+  @Prop()
+  address: string;
 
-  @Prop({ type: Date, default: null })
-  deletedAt: Date;
+  @Prop()
+  phone_number: string;
 
-  timestamps: { createdAt: 'created_at'; updatedAt: 'updated_at' };
+  @Prop({ required: true, enum: Role })
+  role: string;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);

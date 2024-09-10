@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { GetUserUseCase } from './get-user';
-import { UserRepository } from '../../repository/user.repository';
+import { UserRepository } from '../../repository/user.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { User } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
 import { Role } from 'src/core/entities/user.entity';

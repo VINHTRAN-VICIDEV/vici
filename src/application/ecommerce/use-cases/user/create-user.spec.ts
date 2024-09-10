@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { CreateUserUseCase } from './create-user';
-import { UserRepository } from '../../repository/user.repository';
+import { UserRepository } from '../../repository/user.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { User as UserMongoose } from 'src/infra/db/mongodb/mongoose/entities/mongoose.user.entity';
 import { BadRequestException } from '@nestjs/common';

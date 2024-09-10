@@ -3,11 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-// import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserUseCase } from 'src/application/ecommerce/use-cases/user/get-user';
-import { SignUpDto } from './auth.dto';
+
 import { CreateUserUseCase } from 'src/application/ecommerce/use-cases/user/create-user';
+import * as bcrypt from 'bcrypt';
+import { Role } from 'src/core/entities/user.entity';
+import { SignUpDto } from './dto/sign-up.dto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -18,7 +21,8 @@ export class AuthService {
 
   async signIn(username: string, pass: string): Promise<any> {
     const user = await this.getUserUseCase.execute({ username });
-    if (user?.password !== pass || !user) {
+    const passwordHash = await bcrypt.compare(pass, user?.password_hash);
+    if (!passwordHash || !user) {
       throw new UnauthorizedException();
     }
     const payload = {
@@ -37,9 +41,9 @@ export class AuthService {
     });
     if (existUser) {
       throw new BadRequestException(
-        `have exist user with username: ${userData.username}`,
+        `have existed user with username: ${userData.username}`,
       );
     }
-    this.createUserUseCase.execute(userData);
+    await this.createUserUseCase.execute({ ...userData, role: Role.User });
   }
 }

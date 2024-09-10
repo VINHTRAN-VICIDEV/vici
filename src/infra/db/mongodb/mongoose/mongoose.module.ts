@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule as MongooseModuleLib } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/mongoose.user.entity';
-import { UserRepository } from 'src/application/ecommerce/repository/user.repository';
 import { MongooseUserRepository } from './repositories/mongoose.user.repository';
 import { ConfigService } from '@nestjs/config';
-import { ProductRepository } from 'src/application/ecommerce/repository/product.repository';
 import { MongooseProductRepository } from './repositories/mongoose.product.repository';
-import { MongoGenericRepository } from './repositories/mongoose.generic.repository';
 import { Product, ProductSchema } from './entities/mongoose.product.entity';
+import { ProductRepositoryInterface } from 'src/application/ecommerce/repository/product.interface.repository';
+import { UserRepositoryInterface } from 'src/application/ecommerce/repository/user.interface.repository';
 
 @Module({
   imports: [
     MongooseModuleLib.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DB_URI'),
+        dbName: configService.get<string>('DB_NAME'),
       }),
       inject: [ConfigService],
     }),
@@ -29,10 +29,12 @@ import { Product, ProductSchema } from './entities/mongoose.product.entity';
     ]),
   ],
   providers: [
-    { provide: UserRepository, useClass: MongooseUserRepository },
-    { provide: ProductRepository, useClass: MongooseProductRepository },
-    MongoGenericRepository,
+    { provide: UserRepositoryInterface, useClass: MongooseUserRepository },
+    {
+      provide: ProductRepositoryInterface,
+      useClass: MongooseProductRepository,
+    },
   ],
-  exports: [UserRepository, ProductRepository],
+  exports: [UserRepositoryInterface, ProductRepositoryInterface],
 })
 export class MongooseModule {}

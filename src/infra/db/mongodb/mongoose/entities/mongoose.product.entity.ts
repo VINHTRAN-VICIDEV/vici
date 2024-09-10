@@ -1,13 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { User } from './mongoose.user.entity';
+import { BaseEntity } from './mongoose.base.entity';
 
 export type ProductDocument = HydratedDocument<Product>;
 
-@Schema()
-export class Product {
-  _id: mongoose.Schema.Types.ObjectId;
-
+@Schema({
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  },
+})
+export class Product extends BaseEntity {
   @Prop({ required: true })
   name: string;
 
@@ -17,13 +21,8 @@ export class Product {
   @Prop({ required: true, default: 0 })
   amount: number;
 
-  @Prop({ type: Date, default: null })
-  deletedAt: Date;
-
-  timestamps: { createdAt: 'created_at'; updatedAt: 'updated_at' };
-
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  seller: User;
+  owner: User;
 }
 
 const ProductSchema = SchemaFactory.createForClass(Product);

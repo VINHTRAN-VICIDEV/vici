@@ -1,23 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ProductRepository } from '../../repository/product.repository';
-import { Product } from 'src/core/entities/product.entity';
-
-export interface CreateProductUseCaseCommand {
-  name: string;
-  price: number;
-  amount: number;
-}
+import { Product, ProductProps } from 'src/core/entities/product.entity';
+import { ProductRepositoryInterface } from '../../repository/product.interface.repository';
 
 @Injectable()
 export class CreateProductsUseCase {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(private productRepository: ProductRepositoryInterface) {}
 
-  async execute(productData: CreateProductUseCaseCommand, sellerId) {
-    const product = new Product();
-    product.name = productData.name;
-    product.price = productData.price;
-    product.amount = productData.amount;
-    product.seller = sellerId;
-    return this.productRepository.base.create(product);
+  async execute(productData: ProductProps): Promise<Product> {
+    const product = new Product(productData);
+    return this.productRepository.create(product.data);
   }
 }

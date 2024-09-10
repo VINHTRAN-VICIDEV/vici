@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ProductRepository } from '../../repository/product.repository';
+import { ProductRepositoryInterface } from '../../repository/product.interface.repository';
+import { FindAllResponse } from 'src/types/common.type';
+import { Product } from 'src/core/entities/product.entity';
 
 @Injectable()
 export class GetProductsUseCase {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(private productRepository: ProductRepositoryInterface) {}
 
-  async execute() {
-    return this.productRepository.base.getAll();
+  async execute(): Promise<FindAllResponse<Product>> {
+    return this.productRepository.findAll({});
   }
 }

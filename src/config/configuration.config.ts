@@ -20,3 +20,10 @@ export const jwt_config = () => {
     },
   };
 };
+
+export const brcypt_config = () => {
+  return {
+    saltOrRounds: process.env.HASHING_SECRET.length,
+    secret: process.env.HASHING_SECRET,
+  };
+};

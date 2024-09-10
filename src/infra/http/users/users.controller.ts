@@ -1,13 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { GetUsersUseCase } from 'src/application/ecommerce/use-cases/user/get-users';
 import { User } from 'src/core/entities/user.entity';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDto } from './dto/request/create-user.dto';
 import { CreateUserUseCase } from 'src/application/ecommerce/use-cases/user/create-user';
 import { GetUserUseCase } from 'src/application/ecommerce/use-cases/user/get-user';
 import { SoftDeleteUserUseCase } from 'src/application/ecommerce/use-cases/user/soft-delete-user';
-import { DeleteUserDto } from '../dto/delete-user.dto';
+import { DeleteUserDto } from './dto/request/delete-user.dto';
+import { FindAllResponse } from 'src/types/common.type';
+import { UserResponseDto } from './dto/response/user-response.dto';
+import { toResponseDto } from 'src/shared/helpers/to-response-dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -22,15 +33,16 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(['admin'])
   @Get('/')
-  getUsers(): Promise<User[]> {
+  getUsers(): Promise<FindAllResponse<User>> {
     return this.getUsersUseCase.execute({});
   }
 
   @ApiBearerAuth()
   @Post('/')
   @Roles(['admin'])
-  async createUser(@Body() userData: CreateUserDto) {
-    return this.createUserUseCase.execute(userData);
+  async createUser(@Body() userData: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.createUserUseCase.execute({ ...userData });
+    return toResponseDto(UserResponseDto, user);
   }
 
   getUserDetail() {}

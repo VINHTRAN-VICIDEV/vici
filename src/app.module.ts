@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import {
+  brcypt_config,
   database_config,
   host_config,
   jwt_config,
@@ -14,11 +15,10 @@ import { EcommerceModule } from './application/ecommerce/ecommerce.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [host_config, database_config, jwt_config],
+      load: [host_config, database_config, jwt_config, brcypt_config],
       cache: true,
       expandVariables: true,
     }),
-    // MongooseModule.forRoot(process.env.DB_URI, { dbName: process.env.DB_NAME }),
     PersistenceModule.register({
       type: 'mongoose',
       global: true,

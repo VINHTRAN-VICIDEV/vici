@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
+// import { User } from 'src/core/entities/user.entity';
+import { UserRepositoryInterface } from '../../repository/user.interface.repository';
 import { User } from 'src/core/entities/user.entity';
-import { UserRepository } from 'src/application/ecommerce/repository/user.repository';
 
 class GetUserQuery {}
 @Injectable()
 export class GetUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepositoryInterface) {}
 
   async execute(query: GetUserQuery): Promise<User> {
-    return this.userRepository.base.getOne({ ...query });
+    return this.userRepository.findOneByCondition({ ...query });
   }
 }

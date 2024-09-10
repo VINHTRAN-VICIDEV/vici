@@ -5,7 +5,7 @@ import {
 } from './create-product';
 import { getModelToken } from '@nestjs/mongoose';
 import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
-import { ProductRepository } from '../../repository/product.repository';
+import { ProductRepository } from '../../repository/product.interface.repository';
 
 describe('CreateProductUseCase', () => {
   let createProductUseCase;

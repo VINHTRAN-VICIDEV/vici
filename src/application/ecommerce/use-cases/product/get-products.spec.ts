@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { GetProductsUseCase } from './get-products';
-import { ProductRepository } from '../../repository/product.repository';
+import { ProductRepository } from '../../repository/product.interface.repository';
 import { getModelToken } from '@nestjs/mongoose';
 import { Product } from 'src/infra/db/mongodb/mongoose/entities/mongoose.product.entity';
 

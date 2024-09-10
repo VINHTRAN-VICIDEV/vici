@@ -11,8 +11,9 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/shared/decorators/auth.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { SignInDto, SignUpDto } from './auth.dto';
 import { AuthService } from 'src/infra/http/auth/auth.service';
+import { SignInDto } from './dto/sign-in.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @ApiTags('Authenticate')
 @Controller('auth')
