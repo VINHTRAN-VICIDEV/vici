@@ -10,23 +10,23 @@ import {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  firstName: string;
+  first_name: string;
 
   @Column()
-  lastName: string;
+  last_name: string;
 
   @Column()
   username: string;
 
   @Column()
-  passwordHash: string;
+  password_hash: string;
 
   @Column()
-  phoneNumber: string;
+  phone_number: string;
 
   @Column()
   address: string;
@@ -35,11 +35,11 @@ export class User {
   role: string;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deleted_at: Date;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

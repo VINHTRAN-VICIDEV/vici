@@ -20,7 +20,7 @@ import { EcommerceModule } from './application/ecommerce/ecommerce.module';
       expandVariables: true,
     }),
     PersistenceModule.register({
-      type: 'mongoose',
+      type: 'typeorm',
       global: true,
     }),
     EcommerceModule,

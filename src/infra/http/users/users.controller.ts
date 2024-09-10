@@ -10,7 +10,10 @@ import { SoftDeleteUserUseCase } from 'src/application/ecommerce/use-cases/user/
 import { DeleteUserDto } from './dto/request/delete-user.dto';
 import { FindAllResponse } from 'src/types/common.type';
 import { UserResponseDto } from './dto/response/user-response.dto';
-import { toResponseDto } from 'src/shared/helpers/to-response-dto';
+import {
+  toFindAllResponseDto,
+  toResponseDto,
+} from 'src/shared/helpers/to-response-dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -25,8 +28,9 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(['admin'])
   @Get('/')
-  getUsers(): Promise<FindAllResponse<User>> {
-    return this.getUsersUseCase.execute({});
+  async getUsers(): Promise<FindAllResponse<UserResponseDto>> {
+    const data = await this.getUsersUseCase.execute({});
+    return toFindAllResponseDto(UserResponseDto, data);
   }
 
   @ApiBearerAuth()
@@ -43,7 +47,10 @@ export class UserController {
   @ApiParam({ name: 'username', required: true, type: String })
   @Delete('/:username')
   @Roles(['admin'])
-  async deleteUser(@Param() param: DeleteUserDto) {
-    this.softDeleteUserUseCase.execute({ username: param.username });
+  async deleteUser(
+    @Param()
+    { username }: DeleteUserDto,
+  ) {
+    this.softDeleteUserUseCase.execute({ username });
   }
 }
