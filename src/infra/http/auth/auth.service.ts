@@ -19,7 +19,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, pass: string): Promise<any> {
+  async signIn(
+    username: string,
+    pass: string,
+  ): Promise<{ access_token: string }> {
     const user = await this.getUserUseCase.execute({ username });
     const passwordHash = await bcrypt.compare(pass, user?.password_hash);
     if (!passwordHash || !user) {

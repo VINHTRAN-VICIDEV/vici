@@ -10,19 +10,26 @@ import {
 // import { HttpModule } from './infra/http/http.module';
 import { PersistenceModule } from './infra/db/persistence.module';
 import { EcommerceModule } from './application/ecommerce/ecommerce.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [host_config, database_config, jwt_config, brcypt_config],
-      cache: true,
       expandVariables: true,
     }),
     PersistenceModule.register({
       type: 'typeorm',
       global: true,
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+
     EcommerceModule,
   ],
 })

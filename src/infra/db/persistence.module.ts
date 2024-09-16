@@ -19,9 +19,13 @@ export class PersistenceModule {
       }
       case 'typeorm': {
         DbModule = TypeOrmModule;
+        break;
+      }
+      default: {
+        DbModule = MongooseModule;
+        break;
       }
     }
-    console.log(DbModule);
     return {
       global,
       module: PersistenceModule,

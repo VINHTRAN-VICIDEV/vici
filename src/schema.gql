@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserEntity {
+  id: ID!
+  first_name: String!
+  last_name: String!
+  username: String!
+  password_hash: String!
+  phone_number: String
+  address: String
+  role: String!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UserListEntity {
+  items: [UserEntity!]!
+  count: Int!
+}
+
+type LoginPayload {
+  access_token: String!
+}
+
+type ProductEntity {
+  name: String!
+  price: Float!
+  amount: Float!
+}
+
+type ProductList {
+  items: [ProductEntity!]!
+  count: Int!
+}
+
+type Query {
+  users: UserListEntity!
+  user(id: String, username: String): UserEntity
+  products: ProductList!
+}
+
+type Mutation {
+  login(loginData: LoginInput!): LoginPayload!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
