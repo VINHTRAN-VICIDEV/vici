@@ -28,7 +28,7 @@ export class CreateUserUseCase {
     role,
   }: CreateUserUseCaseCommand): Promise<User> {
     const existUser = await this.userRepository.findOneByCondition({
-      username,
+      username: { eq: username },
     });
     if (existUser) {
       throw new BadRequestException(

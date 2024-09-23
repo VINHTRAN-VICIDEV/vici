@@ -7,12 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TypeOrmBaseEntity } from './typeorm.base.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends TypeOrmBaseEntity {
   @Column()
   first_name: string;
 
@@ -33,13 +31,4 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: string;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

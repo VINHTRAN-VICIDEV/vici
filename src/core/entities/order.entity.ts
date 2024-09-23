@@ -4,6 +4,12 @@ import { OrderProduct } from './order-product.entity';
 import { User } from './user.entity';
 
 export enum OrderStatus {
+  PAID = 'paid',
+  OPEN = 'open',
+  CANCELED = 'canceled',
+}
+
+export enum PaymentMethod {
   STRIPE = 'stripe',
 }
 export class OrderProps extends BaseEntity {
@@ -11,6 +17,7 @@ export class OrderProps extends BaseEntity {
   total: number;
   status: OrderStatus;
   paymentId?: string;
+  paymentMethod: PaymentMethod;
   orderProduct: OrderProduct[];
 }
 

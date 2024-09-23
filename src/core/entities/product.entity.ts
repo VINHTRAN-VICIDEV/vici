@@ -1,11 +1,9 @@
 import { BaseEntity } from './base.entity';
 import { Entity } from './entity';
-import { User } from './user.entity';
 
 export class ProductProps extends BaseEntity {
   name: string;
   price: number;
-  owner: User;
   amount: number;
 }
 
@@ -21,9 +19,6 @@ export class Product extends Entity<ProductProps> {
   }
   get price() {
     return this.props.price;
-  }
-  get owner() {
-    return this.props.owner;
   }
   get amount() {
     return this.props.amount;

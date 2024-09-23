@@ -6,6 +6,7 @@ import { UserRepositoryInterface } from 'src/application/ecommerce/repository/us
 import { TypeOrmProductRepository } from './repositories/typeorm.product.repository';
 import { ProductRepositoryInterface } from 'src/application/ecommerce/repository/product.interface.repository';
 import { Product } from './entites/typeorm.product.entity';
+import { Tag } from './entites/typeorm.tag.entity';
 @Module({
   imports: [
     TypeOrmModuleLib.forRoot({
@@ -15,10 +16,10 @@ import { Product } from './entites/typeorm.product.entity';
       username: 'postgres',
       password: 'mydbpostgres',
       database: 'postgres',
-      entities: [User, Product],
+      entities: [User, Product, Tag],
       synchronize: true,
     }),
-    TypeOrmModuleLib.forFeature([User, Product]),
+    TypeOrmModuleLib.forFeature([User, Product, Tag]),
   ],
   providers: [
     { provide: UserRepositoryInterface, useClass: TypeOrmUserRepository },

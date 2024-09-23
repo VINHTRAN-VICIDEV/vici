@@ -1,20 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { User } from './typeorm.user.entity';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Tag } from './typeorm.tag.entity';
+import { TypeOrmBaseEntity } from './typeorm.base.entity';
 
 @Entity()
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Product extends TypeOrmBaseEntity {
   @Column()
   name: string;
 
@@ -24,16 +13,7 @@ export class Product {
   @Column()
   amount: number;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  owner: User;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
+  @ManyToMany(() => Tag, { cascade: true })
+  @JoinTable()
+  tags: Tag[];
 }

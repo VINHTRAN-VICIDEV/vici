@@ -24,8 +24,11 @@ export class AuthService {
     pass: string,
   ): Promise<{ access_token: string }> {
     const user = await this.getUserUseCase.execute({ username });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     const passwordHash = await bcrypt.compare(pass, user?.password_hash);
-    if (!passwordHash || !user) {
+    if (!passwordHash) {
       throw new UnauthorizedException();
     }
     const payload = {

@@ -1,6 +1,8 @@
+import { QueryFilter } from 'src/application/ecommerce/interfaces/query-function';
 import { BaseRepositoryInterface } from 'src/application/ecommerce/repository/base.interface.repository';
 import { FindAllResponse } from 'src/types/common.type';
 import { FindOptionsSelect, FindOptionsWhere, Not, Repository } from 'typeorm';
+import { buildTypeORMQuery } from '../helpers/build-typeorm-query';
 
 export class TypeOrmBaseRepositoryAbstract<T>
   implements BaseRepositoryInterface<T>
@@ -21,15 +23,20 @@ export class TypeOrmBaseRepositoryAbstract<T>
     });
   }
   findOneByCondition(
-    condition?: FindOptionsWhere<T>,
+    condition?: QueryFilter,
     projection?: FindOptionsSelect<T>,
   ): Promise<T> {
-    return this._repository.findOne({ select: projection, where: condition });
+    return this._repository.findOne({
+      select: projection,
+      where: buildTypeORMQuery(condition),
+    });
   }
   async findAll(condition: FindOptionsWhere<T>): Promise<FindAllResponse<T>> {
     const [count, items] = await Promise.all([
       this._repository.count({ where: condition }),
-      this._repository.find({ where: condition }),
+      this._repository.find({
+        where: condition,
+      }),
     ]);
     return {
       count,

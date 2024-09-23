@@ -10,26 +10,21 @@ export class MongooseProductMapper {
       price: entity.price,
       amount: entity.amount,
       name: entity.name,
-      owner: domainUser,
     });
     return model;
   }
   static toMongoose(entity: Product): MongooseProduct {
     const product = new MongooseProduct();
-    const owner = MongooseUserMapper.toMongoose(entity.owner);
     product.price = entity.price;
     product.amount = entity.amount;
     product.name = entity.name;
-    product.owner = owner;
     return product;
   }
   static toCreateMongoose(entity: Product): MongooseProduct {
     const product = new MongooseProduct();
-    const owner = MongooseUserMapper.toMongoose(entity.owner);
     product.price = entity.price;
     product.amount = entity.amount;
     product.name = entity.name;
-    product.owner = owner;
     return product;
   }
 }

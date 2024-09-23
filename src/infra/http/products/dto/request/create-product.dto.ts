@@ -7,6 +7,17 @@ import {
   MinLength,
 } from 'class-validator';
 
+export class Tag {
+  @ApiProperty()
+  @MinLength(3)
+  @MaxLength(10)
+  @IsNotEmpty()
+  title: string;
+
+  @ApiProperty()
+  @IsOptional()
+  description: string;
+}
 export class CreateProductDto {
   @ApiProperty()
   @MinLength(3)
@@ -23,4 +34,7 @@ export class CreateProductDto {
   @IsNotEmpty()
   @Min(0)
   amount: number;
+
+  @ApiProperty()
+  tags: Tag[];
 }
