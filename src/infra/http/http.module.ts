@@ -5,8 +5,7 @@ import { ProductModule } from './products/products.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { RolesGuard } from 'src/shared/guards/roles.guard';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [AuthModule, UserModule, ProductModule],
